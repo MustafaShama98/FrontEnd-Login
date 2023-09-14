@@ -1,63 +1,66 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sub from "./sub";
+import axios from "axios";
 import "../design/sign.css";
-
-
 
 // Function to check password strength
 const checkPasswordStrength = (password) => {
-    const minLength = 6;
-    const minUpperCase = 1;
-    const minLowerCase = 1;
-    const minNumbers = 1;
+  const minLength = 6;
+  const minUpperCase = 1;
+  const minLowerCase = 1;
+  const minNumbers = 1;
 
+  if (password.length < minLength) {
+    return "Password must be at least 8 characters long.";
+  }
 
-    if (password.length < minLength) {
-        return 'Password must be at least 8 characters long.';
-    }
+  if (password.replace(/[^A-Z]/g, "").length < minUpperCase) {
+    return "Password must contain at least one uppercase letter.";
+  }
 
-    if (password.replace(/[^A-Z]/g, '').length < minUpperCase) {
-        return 'Password must contain at least one uppercase letter.';
-    }
+  if (password.replace(/[^a-z]/g, "").length < minLowerCase) {
+    return "Password must contain at least one lowercase letter.";
+  }
 
-    if (password.replace(/[^a-z]/g, '').length < minLowerCase) {
-        return 'Password must contain at least one lowercase letter.';
-    }
+  if (password.replace(/[^0-9]/g, "").length < minNumbers) {
+    return "Password must contain at least one number.";
+  }
 
-    if (password.replace(/[^0-9]/g, '').length < minNumbers) {
-        return 'Password must contain at least one number.';
-    }
-
-
-
-    return 'Password is strong!'; // Password meets all criteria
+  return "Password is strong!"; // Password meets all criteria
 };
-
 
 function Sign() {
   // States for registration
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
-  const [companyName, setCompanyName] = useState('');
+  const [companyName, setCompanyName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhonenun] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [passwordMismatchError, setPasswordMismatchError] = useState(false);
+  const [emptyError, setEmptyError] = useState(false);
+  const [serverError, setServerError] = useState({});
+  const [sub, setSub] = useState("");
 
   // States for checking the errors
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
 
-    // State for password strength error message
-    const [passwordStrengthError, setPasswordStrengthError] = useState("");
+  // State for password strength error message
+  const [passwordStrengthError, setPasswordStrengthError] = useState("");
 
-    // State to store the result of password strength check
-    const [passwordStrength, setPasswordStrength] = useState("");
+  // State to store the result of password strength check
+  const [passwordStrength, setPasswordStrength] = useState("");
 
-    // Handling the name change
+  const extractEmailDomain = (email) => {
+    const domain = email.substring(email.lastIndexOf("@") + 1, email.lastIndexOf("."));
+    return domain;
+  };  
+
+  // Handling the name change
   const handleFName = (e) => {
     setFirstName(e.target.value);
     setSubmitted(false);
@@ -75,20 +78,26 @@ function Sign() {
     setSubmitted(false);
   };
 
-  // Handling the email change
   const handleEmail = (e) => {
     setEmail(e.target.value);
+    setError(""); // reset the error
+    setSubmitted(false);
+};
+
+
+  const handleSub = (e) => {
+    setSub(e.target.value);
     setSubmitted(false);
   };
 
   // Handling the password change
   const handlePassword = (e) => {
-      const newPassword = e.target.value;
-      setPassword(newPassword);
+    const newPassword = e.target.value;
+    setPassword(newPassword);
     setSubmitted(false);
-      // Check password strength
-      const strengthError = checkPasswordStrength(newPassword);
-      setPasswordStrengthError(strengthError);
+    // Check password strength
+    const strengthError = checkPasswordStrength(newPassword);
+    setPasswordStrengthError(strengthError);
   };
 
   const handlePhone = (e) => {
@@ -98,12 +107,41 @@ function Sign() {
 
   const handleCompany = (e) => {
     setCompanyName(e.target.value);
+    setError(""); // reset the error
     setSubmitted(false);
+};
+
+
+  const passwordMismatchMessage = () => {
+    return (
+      <div
+        className="error"
+        style={{
+          display: passwordMismatchError ? "" : "none",
+        }}
+      >
+        <h1>Passwords do not match!</h1>
+      </div>
+    );
+  };
+
+  const empty = () => {
+    return (
+      <div
+        className="error"
+        style={{
+          display: emptyError ? "" : "none",
+        }}
+      >
+        <h1>Please fill out all the fields!</h1>
+      </div>
+    );
   };
 
   // Handling the form submission
-  const next = (e) => {
+  /*const next = (e) => {
     e.preventDefault();
+
     if (
       firstName === "" ||
       phoneNumber === "" ||
@@ -112,22 +150,77 @@ function Sign() {
       email === "" ||
       password === ""
     ) {
-		errorMessage("Please enter all the fields");
+      setEmptyError(true);
+      return;
+
+    } else if (password !== passwordConfirm) {
+      setPasswordMismatchError(true);
+      return; // Stop execution if passwords don't match
     } else {
-	  navigate('/sub',{
-		state: {
-		  firstName,
-		  lastName,
+      navigate("/sub", {
+        state: {
+          firstName,
+          lastName,
           username,
-		  email,
+          email,
           phoneNumber,
-		  password,
-          passwordConfirm
-		}
-	  });
+          password,
+          passwordConfirm,
+        },
+      });
       setError(false);
     }
+  };*/
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const emailDomain = extractEmailDomain(email);
+    
+    if (firstName === "" || phoneNumber === "" || lastName === "" || username === "" || email === "" || sub === "") {
+      setError("Please enter all the fields");
+      return;
+    } else if (companyName.toLowerCase() !== emailDomain.toLowerCase()) {
+       setError("Please use your company email.");
+        return;
+    }else if (password !== passwordConfirm) {
+      setPasswordMismatchError(true);
+      return; // Stop execution if passwords don't match
+    } else if (passwordStrengthError !== "Password is strong!") {
+      setError(passwordStrengthError);
+      return;
+    } else {
+      const url = "http://localhost:3001/signup"; 
+
+      const data = {
+        firstName,
+        lastName,
+        username,
+        email,
+        phoneNumber,
+        password,
+        passwordConfirm,
+        companyName,
+        sub,
+      };
+
+      axios.post(url, data)
+    .then((response) => {
+        console.log(response.data);
+        navigate("/verifyEmail");
+    })
+    .catch((error) => {
+        if (error.response && error.response.data && error.response.data.errors) {
+            const errorMessage = Object.values(error.response.data.errors)[0];
+            setError(errorMessage);
+        } else {
+            setError(error.message || 'Something went wrong. Please try again.');
+        }
+    });
+
+    }
   };
+
+   
 
   const handleConfirmPasswordChange = (event) => {
     setPasswordConfirm(event.target.value);
@@ -149,12 +242,7 @@ function Sign() {
 
   const errorMessage = (message) => {
     return (
-      <div
-        className="error"
-        style={{
-          display: error ? "" : "none",
-        }}
-      >
+      <div className="error" style={{ display: message ? "" : "none" }}>
         <h1>{message}</h1>
       </div>
     );
@@ -165,12 +253,13 @@ function Sign() {
       <center>
         <div>
           <h1>User Registration</h1>
-    </div>
+        </div>
 
-        {/* Calling to the methods */}
         <div className="messages">
-          {errorMessage()}
-          {successMessage()}
+          {errorMessage(error)} 
+          {successMessage()} 
+          {passwordMismatchMessage()} 
+          {empty()}
         </div>
 
         <form>
@@ -237,12 +326,14 @@ function Sign() {
             type="password"
           />
           <br></br>
-            {/* Display the password strength error */}
-            {passwordStrengthError && (
-                <div className="password error">
-                    <div className="password-strength-error">{passwordStrengthError}</div>
-                </div>
-            )}
+          {/* Display the password strength error */}
+          {passwordStrengthError && (
+            <div className="password error">
+              <div className="password-strength-error">
+                {passwordStrengthError}
+              </div>
+            </div>
+          )}
 
           <label className="label">Confirm password</label>
           <input
@@ -253,14 +344,20 @@ function Sign() {
           />
           <br></br>
 
-          <button onClick={next} className="btn" type="next">
-            Next
+          <label className="label">Choose a Subscription</label>
+          <select onChange={handleSub} className="select">
+            <option value="">Select Subscription</option>
+            <option value="basic">Basic Subscription</option>
+            <option value="standard">Standard Subscription</option>
+            <option value="premium">Premium Subscription</option>
+          </select>
+
+          <button onClick={handleSubmit} className="btn" type="submit">
+            Submit
           </button>
         </form>
       </center>
     </div>
   );
-}
-
-
+          }
 export default Sign;
