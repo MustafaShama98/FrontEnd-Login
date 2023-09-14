@@ -9,12 +9,12 @@ import { useEffect, useState } from "react";
 import UnauthorizedAccess from "./pages/UnauthorizedAccess";
 import Signup from "./pages/Signup";
 import Sign from "./pages/Signup";
-import Sub from "./pages/sub";
 import Dashboard from "./pages/Dashboard";
 import Processing from "./pages/Processing";
 import ForgotPassword from "./pages/ForgetPass";
 import LoginUser from "./pages/userLogin"
 import ChangePassword from "./pages/resetPassFirstLogin";
+import VerifyEmail from "./pages/verifyEmail";
 
 
 const App = () => {
@@ -63,7 +63,8 @@ const App = () => {
           <Route path="/admin/login" element={<Login sendUserToApp={receivedUserFromLogin}/>}  />
 
           <Route path="/signup" element={<Sign />} />
-          <Route path="/sub" element={<Sub />} />
+
+          <Route path="/verifyEmail" element={<VerifyEmail />} />
 
           <Route
             path="/processing"
