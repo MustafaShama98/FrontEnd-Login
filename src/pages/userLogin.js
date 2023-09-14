@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from "react-router-dom";
-
+import {useSignIn} from "react-auth-kit"
 
 const LoginUser = ({ sendUserToApp }) => {
+  const signIn = useSignIn();
   const [user, setUser] = useState({});
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -23,16 +24,24 @@ const LoginUser = ({ sendUserToApp }) => {
     try {
       // Make a request to the login endpoint
       setError(username + " " + password);
-      const response = await axios.post('/login', JSON.stringify({ "username": username, "password": password }),
+      const response = await axios.post('/login',
+          JSON.stringify({ "username": username, "password": password }),
         {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true
 
         });
-
+      const {username2, firstName, lastName, role,company,passwordChangedAt} = response.data.user
+      console.log('user login' + response.data.errors)
+      signIn({
+        token: response.data.token,
+        expiresIn: 60* 15,//15 mins
+        tokenType:"Bearer",
+        authState: {username2,firstName, lastName, company, role,passwordChangedAt} //info about the user
+      });
       // Do something with the successful response, e.g., store the token, navigate to a different route, etc.
-      var role = response?.data.user.role
-      var passwordChangedAt = response?.data.user.passwordChangedAt
+      //var role = response?.data.user.role
+    //  var passwordChangedAt = response?.data.user.passwordChangedAt
   
       localStorage.setItem("userID", response?.data.user?.id);
       setUser(response?.data.user)
@@ -67,6 +76,7 @@ const LoginUser = ({ sendUserToApp }) => {
     } catch (error) {
       // Handle error
       console.log(error)
+
       setError('An error occurred');
     }
   };

@@ -36,11 +36,13 @@ const Login = ({ sendUserToApp }) => {
           withCredentials: true,
         }
       );
+      console.log(response.data.user.firstName)
+      const {username, firstName, lastName, role,company} = response.data.user
       signIn({
         token: response.data.token,
         expiresIn: 60* 15,//15 mins
         tokenType:"Bearer",
-        authState: {email} //info about the user
+        authState: {username,firstName, lastName, email, company, role} //info about the user
       });
       setEmail("");
       setPassword("");
@@ -71,8 +73,9 @@ const Login = ({ sendUserToApp }) => {
     };
     sendUserToApp(userToSend);
   };
-  const google = () => {
-    window.open("http://localhost:3001/auth/google", "_self");
+  const google = async () => {
+     window.open("http://localhost:3001/auth/google", "_self");
+
   };
 
   const signUp = () => {
