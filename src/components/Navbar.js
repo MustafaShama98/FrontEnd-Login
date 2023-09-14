@@ -11,7 +11,7 @@ const Navbar = ({ user }) => {
   const logout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userID");
-    window.open("http://localhost:3001/auth/logout", "_self");
+    window.open("http://localhost:3001/logout", "_self");
   };
   return (
     <div className="navbar">
