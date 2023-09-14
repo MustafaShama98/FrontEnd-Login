@@ -179,9 +179,9 @@ function Sign() {
     if (firstName === "" || phoneNumber === "" || lastName === "" || username === "" || email === "" || sub === "") {
       setError("Please enter all the fields");
       return;
-    } else if (companyName.toLowerCase() !== emailDomain.toLowerCase()) {
-        setError("Please use your company email.");
-        return;
+    //} else if (companyName.toLowerCase() !== emailDomain.toLowerCase()) {
+      //  setError("Please use your company email.");
+        //return;
     }else if (password !== passwordConfirm) {
       setPasswordMismatchError(true);
       return; // Stop execution if passwords don't match
