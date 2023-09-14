@@ -17,6 +17,7 @@ import LoginUser from "./pages/userLogin"
 import ChangePassword from "./pages/resetPassFirstLogin";
 import {AuthProvider, RequireAuth} from "react-auth-kit"
 import LandPage from "./pages/landpage";
+import VerifyEmail from "./pages/verifyEmail"
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -71,6 +72,7 @@ const App = () => {
             element={user ? <Navigate to="/" /> : <LoginUser sendUserToApp={receivedUserFromLogin}/>}
           />
           <Route path="/admin/login" element={<Login sendUserToApp={receivedUserFromLogin}/>}  />
+          <Route path="/verifyEmail" element={<VerifyEmail />} />
 
           <Route path="/signup" element={<Sign />} />
           <Route path="/sub" element={<Sub />} />
