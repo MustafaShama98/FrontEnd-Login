@@ -5,7 +5,8 @@ import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "../api/axios";
-const Login = () => {
+const Login = ({ sendUserToApp }) => {
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
   const userRef = useRef();
   const errRef = useRef();
@@ -35,11 +36,15 @@ const Login = () => {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response?.data));
+      
       setEmail("");
       setPassword("");
       setSuccess(true);
+      localStorage.setItem("userID", response?.data.user?.id);
+      setUser(response?.data.user)
+      handleSendUser(response?.data.user)
       navigate("/home");
+
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -53,7 +58,14 @@ const Login = () => {
       errRef.current.focus();
     }
   };
-
+  const handleSendUser = (data) => {
+    const { ...newData } = data;
+    const userToSend = {
+      ...newData,
+      displayName: newData.firstName + " " + newData.lastName,
+    };
+    sendUserToApp(userToSend);
+  };
   const google = () => {
     window.open("http://localhost:3001/auth/google", "_self");
   };

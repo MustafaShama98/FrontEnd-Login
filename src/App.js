@@ -55,12 +55,12 @@ const App = () => {
       <div>
         <Navbar user={user} />
         <Routes>
-        <Route path="/" element={user ? <Home /> : <LoginUser />} />
+        <Route path="/" element={user ? <Home /> : <LoginUser sendUserToApp={receivedUserFromLogin} />} />
           <Route
             path="/login"
-            element={user ? <Navigate to="/" /> : <LoginUser />}
+            element={user ? <Navigate to="/" /> : <LoginUser sendUserToApp={receivedUserFromLogin}/>}
           />
-          <Route path="/admin/login" element={<Login />} />
+          <Route path="/admin/login" element={<Login sendUserToApp={receivedUserFromLogin}/>}  />
 
           <Route path="/signup" element={<Sign />} />
           <Route path="/sub" element={<Sub />} />

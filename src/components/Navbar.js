@@ -1,6 +1,13 @@
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = ({ user }) => {
+  const [userID, setUserID] = useState(localStorage.getItem("userID"));
+  // const count = useRef(localStorage.getItem("userID"));
+  useEffect(() => {
+    setUserID(localStorage.getItem("userID"))
+  })
+  // count.current = localStorage.getItem("userID");
   const logout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userID");
@@ -13,9 +20,9 @@ const Navbar = ({ user }) => {
           Dell Log Analayzer
         </Link>
       </span>
-      {localStorage.getItem("userID") ? (
+      {userID ? (
         <ul className="list">
-          <li className="listItem">{user.displayName}</li>
+          {/* <li className="listItem">{user.displayName}</li> */}
           <li className="listItem" onClick={logout}>
             Logout
           </li>
