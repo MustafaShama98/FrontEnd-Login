@@ -1,17 +1,26 @@
 import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useSignOut} from "react-auth-kit";
+import axios from "../api/axios";
 
 const Navbar = ({ user }) => {
   const [userID, setUserID] = useState(localStorage.getItem("userID"));
+  const signOut = useSignOut()
+  const navigate = useNavigate()
   // const count = useRef(localStorage.getItem("userID"));
   useEffect(() => {
     setUserID(localStorage.getItem("userID"))
   })
   // count.current = localStorage.getItem("userID");
-  const logout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userID");
-    window.open("http://localhost:3001/logout", "_self");
+  const logout = async () => {
+  // const res = await axios.get("/logout",);
+      window.open("http://localhost:3001/logout", "_self");
+      signOut()
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("userID");
+      navigate("/");
+
+    //  window.open("http://localhost:3001/logout", "_self");
   };
   return (
     <div className="navbar">

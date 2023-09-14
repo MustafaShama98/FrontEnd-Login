@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import React from "react";
 import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
+import {useSignIn} from "react-auth-kit"
 import axios from "../api/axios";
 const Login = ({ sendUserToApp }) => {
   const [user, setUser] = useState({});
@@ -14,7 +14,7 @@ const Login = ({ sendUserToApp }) => {
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
-
+  const signIn = useSignIn();
   useEffect(() => {
     userRef.current.focus();
   }, []);
@@ -36,7 +36,12 @@ const Login = ({ sendUserToApp }) => {
           withCredentials: true,
         }
       );
-      
+      signIn({
+        token: response.data.token,
+        expiresIn: 60* 15,//15 mins
+        tokenType:"Bearer",
+        authState: {email} //info about the user
+      });
       setEmail("");
       setPassword("");
       setSuccess(true);

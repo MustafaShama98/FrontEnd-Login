@@ -15,7 +15,8 @@ import Processing from "./pages/Processing";
 import ForgotPassword from "./pages/ForgetPass";
 import LoginUser from "./pages/userLogin"
 import ChangePassword from "./pages/resetPassFirstLogin";
-
+import {AuthProvider, RequireAuth} from "react-auth-kit"
+import LandPage from "./pages/landpage";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -51,11 +52,20 @@ const App = () => {
   };
 
   return (
-    <BrowserRouter>
+      <AuthProvider
+          authType={"cookie"}
+          authName={"_auth"}
+          cookieDomain={window.location.hostname}
+          cookieSecure={false}
+      >
       <div>
+        <BrowserRouter>
         <Navbar user={user} />
+
         <Routes>
-        <Route path="/" element={user ? <Home /> : <LoginUser sendUserToApp={receivedUserFromLogin} />} />
+          <Route path="/" element={<LandPage />} />
+
+          {/*<Route path="/" element={user ? <Home /> : <LoginUser sendUserToApp={receivedUserFromLogin} />} />*/}
           <Route
             path="/login"
             element={user ? <Navigate to="/" /> : <LoginUser sendUserToApp={receivedUserFromLogin}/>}
@@ -75,18 +85,24 @@ const App = () => {
             element={user ? <Post /> : <Navigate to="/login" />}
           />
           <Route path="*" element={<NoPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={ <RequireAuth loginPath={"/unauthorized"}><Dashboard /></RequireAuth> } />
            <Route path="/unauthorized" element={<UnauthorizedAccess />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
-          <Route path="/home" element={<Home />} />
+
+          <Route path="/home" element={
+            <RequireAuth loginPath={"/unauthorized"}>
+              <Home />
+            </RequireAuth>
+          } />
           <Route path="/resetPassFirstLogin/:username" element={<ChangePassword />} />
          { /* <Route path="/dashboard/xx" element={<Signup />} /> */}
 
 
 
         </Routes>
+        </BrowserRouter>
       </div>
-    </BrowserRouter>
+        </AuthProvider>
   );
 };
 
