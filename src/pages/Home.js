@@ -2,6 +2,7 @@ import Card from "../components/Card";
 import { posts } from "../data";
 import {useAuthUser} from 'react-auth-kit'
 
+
 const Home = () => {
   const auth = useAuthUser()
 

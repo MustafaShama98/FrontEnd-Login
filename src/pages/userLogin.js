@@ -32,7 +32,7 @@ const LoginUser = ({ sendUserToApp }) => {
 
         });
       const {username2, firstName, lastName, role,company,passwordChangedAt} = response.data.user
-      console.log('user login' + response.data.errors)
+      console.log('login:' + response.data.user.firstName+ ' ' + response.data.user.role)
       signIn({
         token: response.data.token,
         expiresIn: 60* 15,//15 mins

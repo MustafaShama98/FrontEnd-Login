@@ -36,7 +36,7 @@ const Login = ({ sendUserToApp }) => {
           withCredentials: true,
         }
       );
-      console.log(response.data.user.firstName)
+      console.log('login:' + response.data.user.firstName+ ' ' + response.data.user.role)
       const {username, firstName, lastName, role,company} = response.data.user
       signIn({
         token: response.data.token,
@@ -145,7 +145,7 @@ const Login = ({ sendUserToApp }) => {
               }}>
                 Forgot Password?
               </Link>
-              <h5 style={{ textAlign: "center" }}>Not admin?
+              <h5 style={{ textAlign: "center" }}>Not an admin?
                 <Link className="link" to="../login"
                       style={{
                         margin: "0.5rem",

@@ -1,48 +1,39 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {useAuthUser} from "react-auth-kit";
 
 const unauthorizedAccessStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "calc(100vh - 100px)",
-};
-
-const buttonStyle = {
-    margin: "10px",
-    padding: "10px 20px",
-    fontSize: "16px",
+    backgroundColor: "#ffcccc",
+    padding: "20px",
+    border: "1px solid #ff0000",
     borderRadius: "5px",
-    cursor: "pointer",
-    border: "none",
-    backgroundColor: "#007BFF",
-    color: "#fff",
+    textAlign: "center",
+    margin: "20px auto",
+    maxWidth: "500px",
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
 };
 
+const headerStyle = {
+    color: "#ff0000",
+    fontSize: "24px",
+};
+
+const paragraphStyle = {
+    fontSize: "16px",
+};
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
 const UnauthorizedAccess = () => {
-    const navigate = useNavigate();
-
-    const handleLoginRedirect = () => {
-        navigate("/admin/login");
-    };
-
-    const handleSignUpRedirect = () => {
-        navigate("/signup");
-    };
-
+    const auth = useAuthUser()
     return (
         <div style={unauthorizedAccessStyle}>
-            <h2>You are not logged in!</h2>
-            <p>You need to be logged in to access this page.</p>
-            <p>Would you like to:</p>
-            <button style={buttonStyle} onClick={handleLoginRedirect}>
-                Login
-            </button>
-            <span>or</span>
-            <button style={buttonStyle} onClick={handleSignUpRedirect}>
-                Sign Up
-            </button>
+            <h2 style={headerStyle}>Unauthorized Access</h2>
+            <p style={paragraphStyle}>
+                You do not have permission to access this page. Please contact your company's
+                <b>{" " + capitalizeFirstLetter(auth().company )
+                + " "} </b>
+                administrator for access.
+            </p>
         </div>
     );
 };
