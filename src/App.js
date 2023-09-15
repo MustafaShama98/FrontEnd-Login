@@ -100,7 +100,7 @@ const App = () => {
           {/***************************************************************/}
           {/*protected routes childs - needs to be logged in */}
           {/*<Route path="/home" element={ <RequireAuth loginPath={"/unauthorized"}><Home/></RequireAuth>}/>*/}
-          <Route path="/home" element={ <ProtectRoute allowedRoles={'admin'} PageComp ={Home} />   }/>
+          <Route path="/home" element={ <ProtectRoute allowedRoles={['admin','config']} PageComp ={Home} />   }/>
           <Route path="/dashboard" element={ <RequireAuth loginPath={"/unauthorized"}><Dashboard/>< /RequireAuth>}/>
             {/***************************************************************/}
 

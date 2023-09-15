@@ -10,7 +10,7 @@ const ProtectRoute = ({allowedRoles, PageComp }) =>{
   // const userRole = auth().role
         console.log( auth()?.role)
     return (
-        auth()?.role === {allowedRoles} ?
+        allowedRoles.includes(auth()?.role) ?
             <RequireAuth loginPath={"/unauthenticated"}><PageComp/></RequireAuth>
             : auth() ?
                 <Navigate to="/noPermssion"/>  //logged in but dont have access
