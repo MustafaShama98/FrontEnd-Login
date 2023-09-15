@@ -13,6 +13,8 @@ import Sub from "./pages/sub";
 import Dashboard from "./pages/Dashboard";
 import Processing from "./pages/Processing";
 import ForgotPassword from "./pages/ForgetPass";
+import ResetPass from "./pages/resetPass";
+
 import LoginUser from "./pages/userLogin"
 import ChangePassword from "./pages/resetPassFirstLogin";
 import {AuthProvider, RequireAuth} from "react-auth-kit"
@@ -93,6 +95,7 @@ const App = () => {
            <Route path="/unauthenticated" element={<UnauthenticatedAccess />} />
           <Route path="/noPermssion" element={<UnauthorizedAccess />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/resetPass/:id/:token" element={<ResetPass />} />
 
           {/***************************************************************/}
           {/*protected routes childs - needs to be logged in */}
