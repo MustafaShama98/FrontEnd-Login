@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import UnauthenticatedAccess from "./pages/UnauthenticatedAccess";
 import Signup from "./pages/Signup";
 import Sign from "./pages/Signup";
-import Sub from "./pages/sub";
 import Dashboard from "./pages/Dashboard";
 import Processing from "./pages/Processing";
 import ForgotPassword from "./pages/ForgetPass";
@@ -78,7 +77,7 @@ const App = () => {
           <Route path="/verifyEmail" element={<VerifyEmail />} />
 
           <Route path="/signup" element={<Sign />} />
-          <Route path="/sub" element={<Sub />} />
+
 
           <Route
             path="/processing"
