@@ -99,9 +99,10 @@ const App = () => {
 
           {/***************************************************************/}
           {/*protected routes childs - needs to be logged in */}
-          {/*<Route path="/home" element={ <RequireAuth loginPath={"/unauthorized"}><Home/></RequireAuth>}/>*/}
-          <Route path="/home" element={ <ProtectRoute allowedRoles={['admin','config']} PageComp ={Home} />   }/>
-          <Route path="/dashboard" element={ <RequireAuth loginPath={"/unauthorized"}><Dashboard/>< /RequireAuth>}/>
+
+          <Route path="/home" element={ <ProtectRoute allowedRoles={['viewer', 'admin','config']} PageComp ={Home} />   }/>
+          <Route path="/dashboard" element={ <ProtectRoute allowedRoles={['admin','config']} PageComp ={Dashboard} />   }/>
+
             {/***************************************************************/}
 
           <Route path="/resetPassFirstLogin/:username" element={<ChangePassword />} />

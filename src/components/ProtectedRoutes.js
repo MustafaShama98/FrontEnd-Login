@@ -1,7 +1,5 @@
 import { RequireAuth,useAuthUser,useIsAuthenticated} from "react-auth-kit"
 import {Navigate, Outlet, Route} from "react-router-dom";
-import Home from "../pages/Home";
-
 
 
 const ProtectRoute = ({allowedRoles, PageComp }) =>{
