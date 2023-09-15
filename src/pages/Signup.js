@@ -138,40 +138,6 @@ function Sign() {
     );
   };
 
-  // Handling the form submission
-  /*const next = (e) => {
-    e.preventDefault();
-
-    if (
-      firstName === "" ||
-      phoneNumber === "" ||
-      lastName === "" ||
-      username === "" ||
-      email === "" ||
-      password === ""
-    ) {
-      setEmptyError(true);
-      return;
-
-    } else if (password !== passwordConfirm) {
-      setPasswordMismatchError(true);
-      return; // Stop execution if passwords don't match
-    } else {
-      navigate("/sub", {
-        state: {
-          firstName,
-          lastName,
-          username,
-          email,
-          phoneNumber,
-          password,
-          passwordConfirm,
-        },
-      });
-      setError(false);
-    }
-  };*/
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const emailDomain = extractEmailDomain(email);
@@ -179,9 +145,9 @@ function Sign() {
     if (firstName === "" || phoneNumber === "" || lastName === "" || username === "" || email === "" || sub === "") {
       setError("Please enter all the fields");
       return;
-    } else if (companyName.toLowerCase() !== emailDomain.toLowerCase()) {
-       setError("Please use your company email.");
-        return;
+    // } else if (companyName.toLowerCase() !== emailDomain.toLowerCase()) {
+    //    setError("Please use your company email.");
+    //     return;
     }else if (password !== passwordConfirm) {
       setPasswordMismatchError(true);
       return; // Stop execution if passwords don't match
