@@ -1,5 +1,5 @@
 import React from 'react';
-import '../design/VerifyEmail.css';
+import '../design/verifyEmail.css';
 
 function VerifyEmail() {
     return (
