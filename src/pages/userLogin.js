@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
-const LoginUser = ({ sendUserToApp }) => {
+const LoginUser = ({ sendUserToApp }) => {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -11,12 +12,12 @@ const LoginUser = ({ sendUserToApp }) => {
   const [error, setError] = useState(null);
   const handleSendUser = (data) => {
     const { ...newData } = data;
-    const userToSend = { 
+    const userToSend = {
       ...newData,
       displayName: newData.firstName + " " + newData.lastName,
     };
     sendUserToApp(userToSend);
-  };
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -33,7 +34,7 @@ const LoginUser = ({ sendUserToApp }) => {
       // Do something with the successful response, e.g., store the token, navigate to a different route, etc.
       var role = response?.data.user.role
       var passwordChangedAt = response?.data.user.passwordChangedAt
-  console.log(passwordChangedAt)
+      console.log(passwordChangedAt)
       localStorage.setItem("userID", response?.data.user?.id);
       setUser(response?.data.user)
       handleSendUser(response?.data.user)
@@ -95,6 +96,17 @@ const LoginUser = ({ sendUserToApp }) => {
             placeholder='Password'
           />
         </div>
+        <h5 style={{ textAlign: "center",marginBottom: "5px" }}>admin?
+          <Link className="link" to="../admin/login"
+            style={{
+              margin: "0.5rem",
+              textDecoration: "none",
+              color: 'blue',
+              borderBottom: "1px solid blue"
+            }}>
+            Login here
+          </Link>
+        </h5>
         <button className="btn btn-info" style={{ marginLeft: "30%" }} type="submit">Login</button>
       </form>
       {error && <div>Error: {error}</div>}

@@ -129,20 +129,15 @@ const Login = ({ sendUserToApp }) => {
               <button className="submit" onClick={submit}>
                 Login
               </button>
-              <Link className="link" to="../forgotPassword">
+              <Link className="link" to="../forgotPassword" style={{
+                margin: "0.5rem",
+                textDecoration: "none",
+                color: 'blue',
+                borderBottom: "1px solid blue"
+              }}>
                 Forgot Password?
               </Link>
-              <h5 style={{ textAlign: "center" }}>Not admin?
-                <Link className="link" to="../login"
-                  style={{
-                    margin: "0.5rem",
-                    textDecoration: "none",
-                    color: 'blue',
-                    borderBottom: "1px solid blue"
-                  }}>
-                  Login here
-                </Link>
-              </h5>
+
 
             </div>
           </div>

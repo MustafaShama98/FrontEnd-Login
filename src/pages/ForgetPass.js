@@ -35,7 +35,7 @@ const ForgotPassword = () => {
         </div>
         <button type="submit">Submit</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p style={{ color: 'green' }}>{message}</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
