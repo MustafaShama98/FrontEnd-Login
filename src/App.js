@@ -13,6 +13,8 @@ import Sub from "./pages/sub";
 import Dashboard from "./pages/Dashboard";
 import Processing from "./pages/Processing";
 import ForgotPassword from "./pages/ForgetPass";
+import ResetPass from "./pages/resetPass";
+
 import LoginUser from "./pages/userLogin"
 import ChangePassword from "./pages/resetPassFirstLogin";
 import {AuthProvider, RequireAuth} from "react-auth-kit"
@@ -90,6 +92,7 @@ const App = () => {
           <Route path="/dashboard" element={ <RequireAuth loginPath={"/unauthorized"}><Dashboard /></RequireAuth> } />
            <Route path="/unauthorized" element={<UnauthorizedAccess />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/resetPass/:id/:token" element={<ResetPass />} />
 
           <Route path="/home" element={
             <RequireAuth loginPath={"/unauthorized"}>

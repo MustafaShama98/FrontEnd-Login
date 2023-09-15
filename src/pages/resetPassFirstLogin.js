@@ -12,6 +12,30 @@ const ChangePassword = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const { username } = useParams();
+    const checkPasswordStrength = (password) => {
+        const minLength = 6;
+        const minUpperCase = 1;
+        const minLowerCase = 1;
+        const minNumbers = 1;
+
+        if (password.length < minLength) {
+            return "Password must be at least 8 characters long.";
+        }
+
+        if (password.replace(/[^A-Z]/g, "").length < minUpperCase) {
+            return "Password must contain at least one uppercase letter.";
+        }
+
+        if (password.replace(/[^a-z]/g, "").length < minLowerCase) {
+            return "Password must contain at least one lowercase letter.";
+        }
+
+        if (password.replace(/[^0-9]/g, "").length < minNumbers) {
+            return "Password must contain at least one number.";
+        }
+
+        return "Password is strong!"; // Password meets all criteria
+    };
     const handleSubmit = async (e) => {
         console.log(username)
 
@@ -23,25 +47,29 @@ const ChangePassword = () => {
 
         try {
             // Replace this URL with your backend endpoint
-            const response = await axios.post('/changePassword',
-                JSON.stringify({
-                    "oldPassword": oldPassword,
-                    "newPassword": newPassword,
-                    "username":username
-                }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
+            if (checkPasswordStrength(newPassword) === "Password is strong!") {
+                const response = await axios.post('/changePassword',
+                    JSON.stringify({
+                        "oldPassword": oldPassword,
+                        "newPassword": newPassword,
+                        "username": username
+                    }),
+                    {
+                        headers: { 'Content-Type': 'application/json' },
+                        withCredentials: true
+
+                    }
+                );
+                console.log(response?.data.success)
+                if (response?.data.status === 'success') {
+                    setSuccess('Password changed successfully');
+                    navigate('/home')
+                } else if (response?.data.status === 'incorrect old password') {
+                    setError('incorrect old password');
 
                 }
-            );
-            console.log(response?.data.success)
-            if (response?.data.status==='success') {
-                setSuccess('Password changed successfully');
-                navigate('/home')
-            } else if(response?.data.status==='incorrect old password'){
-                setError('incorrect old password');
-
+            }else{
+                setError(checkPasswordStrength(newPassword) )
             }
         } catch (err) {
             setError(err.message);
