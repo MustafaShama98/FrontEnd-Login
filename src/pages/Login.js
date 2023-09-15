@@ -5,7 +5,7 @@ import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "../api/axios";
-const Login = ({ sendUserToApp }) => {
+const Login = ({ sendUserToApp }) => {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
   const userRef = useRef();
@@ -36,7 +36,7 @@ const Login = ({ sendUserToApp }) => {
           withCredentials: true,
         }
       );
-      
+
       setEmail("");
       setPassword("");
       setSuccess(true);
@@ -132,6 +132,18 @@ const Login = ({ sendUserToApp }) => {
               <Link className="link" to="../forgotPassword">
                 Forgot Password?
               </Link>
+              <h5 style={{ textAlign: "center" }}>Not admin?
+                <Link className="link" to="../login"
+                  style={{
+                    margin: "0.5rem",
+                    textDecoration: "none",
+                    color: 'blue',
+                    borderBottom: "1px solid blue"
+                  }}>
+                  Login here
+                </Link>
+              </h5>
+
             </div>
           </div>
         </div>

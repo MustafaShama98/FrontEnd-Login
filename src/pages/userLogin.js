@@ -11,7 +11,7 @@ const LoginUser = ({ sendUserToApp }) => {
   const [error, setError] = useState(null);
   const handleSendUser = (data) => {
     const { ...newData } = data;
-    const userToSend = {
+    const userToSend = { 
       ...newData,
       displayName: newData.firstName + " " + newData.lastName,
     };
@@ -33,11 +33,12 @@ const LoginUser = ({ sendUserToApp }) => {
       // Do something with the successful response, e.g., store the token, navigate to a different route, etc.
       var role = response?.data.user.role
       var passwordChangedAt = response?.data.user.passwordChangedAt
-  
+  console.log(passwordChangedAt)
       localStorage.setItem("userID", response?.data.user?.id);
       setUser(response?.data.user)
       handleSendUser(response?.data.user)
       if (role === 'configurator') {
+
         if (passwordChangedAt !== undefined) {
           setUsername('')
           setPassword('')
